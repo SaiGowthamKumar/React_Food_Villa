@@ -3,7 +3,7 @@ const Profile = (props) => {
     const [count,setCount]=useState(0);
     return (
         <div>
-            <h2>This is function based component</h2>
+            <h2>This is functional based component normally we uses the hooks</h2>
             <h3>Name : {props.name}</h3>
             <h4>Count : {count}</h4>
             <button onClick={()=>setCount(1+count)}>Counter</button>
