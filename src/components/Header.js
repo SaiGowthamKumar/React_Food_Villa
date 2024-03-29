@@ -13,7 +13,7 @@ const Title = () => (
 );
 
 const Header = () => {
-    const [title, setTitle] = useState("Food Villa");
+    const [title, setTitle] = useState("FOOD VILLA");
 
     return (
         <div className="header">
@@ -25,6 +25,7 @@ const Header = () => {
                 <li><Link to="/about">About</Link></li>
                 <li><Link to="/contact">Contact</Link></li>
                 <li><Link to="/cart">Cart</Link></li>
+                <li><Link to="/instamart">Instamart</Link></li>
                 </ul>
             </div>
             {loggedUser() ? <button>LogIn</button> : <button>LogOut</button>}

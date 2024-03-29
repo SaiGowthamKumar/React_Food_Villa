@@ -6,8 +6,10 @@ class Profile extends React.Component{
             count:0,
 			count2:0,
 		};
+		console.log("contructor");
 	}
-	render(){
+	render() {
+		console.log("render");
 		return (
 			<div>
 			    <h2>This is class based component</h2>
@@ -16,7 +18,6 @@ class Profile extends React.Component{
 				<button onClick={()=>{
 					this.setState({
 						count:1,
-
 					});
 				}}>Counter</button>
 			</div>

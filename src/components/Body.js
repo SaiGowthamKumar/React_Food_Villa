@@ -1,24 +1,23 @@
 import RestaurantCard from "./RestaurantCard"
-import {restaurantCard} from "./constants.js"
+import {restaurantCard,REST_API_URL} from "../constants.js"
 import { useState,useEffect} from "react";
 import Shimmer from "./Shimmer.js"
 import { Link } from "react-router-dom";
-function filterData(searchText,restaurants){
-  return restaurants.filter((restaurant)=>
-    restaurant?.info?.name?.toLowerCase()?.includes(searchText.toLowerCase())
-  );
-}
+import {filterData} from "../utils/Helper"
+import useOnline from "../utils/useOnline";
 const Body=()=>{
   const [searchText,setSearchText]=useState();
   const [searchClick,setSearchClick]=useState("false");
   const [restaurants, setRestaurants] = useState([]);
   const [filteredRestaurants,setFilteredRestaurants]=useState([]);
+
   useEffect(()=>{
       getRestaurants();
   },[searchText]);
+
   async function getRestaurants() {
     try {
-      const data = await fetch("https://www.swiggy.com/dapi/restaurants/list/v5?lat=17.3667195&lng=78.4285084&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING");
+      const data = await fetch(REST_API_URL);
       
       if (!data.ok) {
         throw new Error(`Failed to fetch data. Status: ${data.status}`);
@@ -33,7 +32,12 @@ const Body=()=>{
       console.error('Error fetching data:', error);
     }
   }
-  
+  const isOnline=useOnline();
+  if(!isOnline){
+    return (
+      <h1>Offline,Please check your intenet connection!!!!</h1>
+    )
+  }
   return (restaurants.length ===0 ) ? <Shimmer/>: (
     <>
     <div className="search-container">
@@ -53,15 +57,19 @@ const Body=()=>{
           }>Search</button>
     </div>
     <div className="restaurant-card">
-    {filteredRestaurants.length === 0 ? <h1>No data presented</h1> :
-      filteredRestaurants.map((restaurant) => {
-        return ( <Link to={"/restaurant/"+restaurant.info.id}
-		key={restaurant.info.id } className="restCardLink"
-	 > 
-          <RestaurantCard {...restaurant} />
-          </Link>);
-         
-      })}
+    {
+      filteredRestaurants.length === 0 ? <h1>No data presented</h1> 
+                   :filteredRestaurants.map((restaurant) => 
+      {
+        return (
+        <Link to={"/restaurant/"+restaurant.info.id}
+        key={restaurant.info.id } className="restCardLink"> 
+        <RestaurantCard {...restaurant} />
+        </Link>);
+      }
+    )
+    }
+    
   </div>
   
      </>
